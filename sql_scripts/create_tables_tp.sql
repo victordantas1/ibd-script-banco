@@ -1,6 +1,5 @@
-SET GLOBAL innodb_lock_wait_timeout = 200;
-
 -- Criação do Schema do Banco de Dados
+DROP DATABASE IF EXISTS connectme;
 CREATE DATABASE connectme;
 USE connectme;
 
@@ -35,6 +34,14 @@ CREATE TABLE PERFIL_USUARIO (
     path_foto VARCHAR(255),
     FOREIGN KEY (login_usuario) REFERENCES USUARIO(login_usuario),
     FOREIGN KEY (id_localizacao) REFERENCES LOCALIZACAO(id_localizacao)
+);
+
+CREATE TABLE CONEXAO (
+    id_perfil1 INT NOT NULL,
+    id_perfil2 INT NOT NULL,
+    PRIMARY KEY (id_perfil1, id_perfil2),
+    FOREIGN KEY (id_perfil1) REFERENCES PERFIL_USUARIO(id_perfil),
+    FOREIGN KEY (id_perfil2) REFERENCES PERFIL_USUARIO(id_perfil)
 );
 
 -- Tabela INTERESSE
@@ -80,9 +87,11 @@ CREATE TABLE GRUPO (
 CREATE TABLE POSTAGEM_GRUPO (
     id_postagem INT NOT NULL,
     id_grupo INT NOT NULL,
+    id_perfil INT NOT NULL,
     PRIMARY KEY (id_postagem),
     FOREIGN KEY (id_postagem) REFERENCES POSTAGEM(id_postagem),
-    FOREIGN KEY (id_grupo) REFERENCES GRUPO(id_grupo)
+    FOREIGN KEY (id_grupo) REFERENCES GRUPO(id_grupo),
+    FOREIGN KEY (id_perfil) REFERENCES PERFIL_USUARIO(id_perfil)
 );
 
 -- Tabela MIDIA
